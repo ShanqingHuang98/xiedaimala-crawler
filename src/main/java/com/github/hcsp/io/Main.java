@@ -60,7 +60,7 @@ public class Main {
         }
     }
 
-    private static Document httpGetAdnParseHtml(String link) {
+    private static Document httpGetAdnParseHtml(String link) throws IOException {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         // 怕被发现是爬虫，所以要加这个
