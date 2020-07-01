@@ -45,7 +45,7 @@ public class Main {
 
     @SuppressFBWarnings("DMI_CONSTANT_DB_PASSWORD")
     public static void main(String[] args) throws IOException, SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:h2:file:/E:/IdeaProjects/xiedaimala-crawler/news", USER_NAME, PASSWORD);
+        Connection connection = DriverManager.getConnection("jdbc:h2:file:./news", USER_NAME, PASSWORD);
         String link;
 
         while ((link = getNextLinkThenDelete(connection)) != null) {
