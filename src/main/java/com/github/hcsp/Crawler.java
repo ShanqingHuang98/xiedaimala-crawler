@@ -16,35 +16,39 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class Crawler {
-    private CrawlerDao dao = new MyBatisCrawlerDao();
+public class Crawler extends Thread {
 
-    public void run() throws SQLException, IOException {
-        String link;
+    private CrawlerDao dao;
 
-        // 从数据库加载下一个连接，如果能加载到，则进行循环。
-        while ((link = dao.getNextLinkThenDelete()) != null) {
-            //询问数据库当前连接是否已被处理过
-            if (dao.isLinkProcessed(link)) {
-                continue;
-            }
-
-            if (isInterestingLink(link)) {
-                System.out.println(link);
-                Document doc = httpGetAdnParseHtml(link);
-
-                parseUrlsFromPageAndStoreIntoDatabase(doc);
-
-                StoreIntoDatabaseIfItIsNewsPage(doc, link);
-
-                dao.insertProcessedLink(link);
-            }
-        }
+    public Crawler(CrawlerDao dao) {
+        this.dao = dao;
     }
 
-    @SuppressFBWarnings("DMI_CONSTANT_DB_PASSWORD")
-    public static void main(String[] args) throws IOException, SQLException {
-        new Crawler().run();
+    @Override
+    public void run() {
+        try {
+            String link;
+            // 从数据库加载下一个连接，如果能加载到，则进行循环。
+            while ((link = dao.getNextLinkThenDelete()) != null) {
+                //询问数据库当前连接是否已被处理过
+                if (dao.isLinkProcessed(link)) {
+                    continue;
+                }
+
+                if (isInterestingLink(link)) {
+                    System.out.println(link);
+                    Document doc = httpGetAdnParseHtml(link);
+
+                    parseUrlsFromPageAndStoreIntoDatabase(doc);
+
+                    StoreIntoDatabaseIfItIsNewsPage(doc, link);
+
+                    dao.insertProcessedLink(link);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void parseUrlsFromPageAndStoreIntoDatabase(Document doc) throws SQLException {
@@ -56,7 +60,7 @@ public class Crawler {
             }
 
             if (!href.toLowerCase().startsWith("javascript")) {
-                dao.insertLinkToBeProcessed(href);
+             dao.insertLinkToBeProcessed(href);
             }
         }
     }
