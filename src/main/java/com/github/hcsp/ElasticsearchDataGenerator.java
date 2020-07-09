@@ -48,7 +48,7 @@ public class ElasticsearchDataGenerator {
                     IndexRequest request = new IndexRequest("news");
 
                     Map<String, Object> data = new HashMap<>();
-                    data.put("content",news.getContent().length()>10?news.getUrl().substring(0, 10):news.getContent());
+                    data.put("content", news.getContent().length() > 10 ? news.getUrl().substring(0, 10) : news.getContent());
                     data.put("url", news.getContent());
                     data.put("title", news.getTitle());
                     data.put("createdAt", news.getCreatedAt());
@@ -60,7 +60,7 @@ public class ElasticsearchDataGenerator {
                 }
                 BulkResponse bulkResponse = client.bulk(bulkRequest, RequestOptions.DEFAULT);
 
-                System.out.println("Current thread:" + Thread.currentThread().getName() + "finishes" + i +":"+ bulkResponse.status().getStatus());
+                System.out.println("Current thread:" + Thread.currentThread().getName() + "finishes" + i + ":" + bulkResponse.status().getStatus());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

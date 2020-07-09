@@ -18,7 +18,7 @@ public class MyBatisCrawlerDao implements CrawlerDao {
         try {
             String resource = "db/mybatis/config.xml";
             InputStream inputStream = Resources.getResourceAsStream(resource);
-             sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -56,7 +56,7 @@ public class MyBatisCrawlerDao implements CrawlerDao {
         param.put("tableName", "links_already_processed");
         param.put("link", link);
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            session.insert("com.github.hcsp.MyMapper.insertLink",param);
+            session.insert("com.github.hcsp.MyMapper.insertLink", param);
         }
     }
 
@@ -66,7 +66,7 @@ public class MyBatisCrawlerDao implements CrawlerDao {
         param.put("tableName", "links_to_be_processed");
         param.put("link", link);
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            session.insert("com.github.hcsp.MyMapper.insertLink",param);
+            session.insert("com.github.hcsp.MyMapper.insertLink", param);
         }
     }
 }
