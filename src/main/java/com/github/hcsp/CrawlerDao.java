@@ -12,4 +12,6 @@ public interface CrawlerDao {
     void insertProcessedLink(String link);
 
     void insertLinkToBeProcessed(String href);
+
+
 }
